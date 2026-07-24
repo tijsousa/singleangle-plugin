@@ -114,6 +114,14 @@ Angle selection in Step 5 must reference these directly.
 python3 ~/.claude/skills/singleangle/scripts/singleangle-research.py "<topic>" --emit=compact [--deep] [--days=N]
 ```
 
+> **Path note:** the script lives inside this skill's own directory. When the skill
+> is installed as a plugin (e.g. Cowork), it is NOT under `~/.claude/skills/` —
+> use the `scripts/singleangle-research.py` path relative to wherever this SKILL.md
+> resides. **If you cannot run the engine at all (no Python, no API keys, or a
+> sandbox like Cowork), skip straight to Step 4 in web-fallback mode** and gather
+> everything with your own WebSearch tool — the skill still works, just without the
+> API lanes.
+
 The engine will:
 - Search Reddit for relevant discussions (threads, comments, debates) via OpenAI Responses API
 - Search X for relevant posts (takes, hot takes, data shares, stories) via xAI Live Search
@@ -127,11 +135,32 @@ Typically takes 2-5 minutes. If API keys are missing, the script automatically f
 
 ### Step 4: Supplement with WebSearch
 
-Use WebSearch (or perplexity_search) for 5-10 additional sources:
+**First, check which mode the engine ran in.** Look at the top of `research.md`
+(and the console output): if the counts line shows Reddit/X/LinkedIn results, the
+API lanes ran (full mode). If the engine printed a "WebSearch fallback / no API
+keys" note and the counts are all zero, it ran in **web-fallback mode** (e.g. in
+Cowork, where the sandbox has no API keys). Adjust your WebSearch accordingly:
+
+**Full mode (API keys present — e.g. local Claude Code):**
+Use WebSearch for 5-10 *additional* sources:
 - Blog posts, articles, reports, op-eds
-- EXCLUDE reddit.com, x.com, and linkedin.com (already covered)
+- EXCLUDE reddit.com, x.com, and linkedin.com (the engine already covered these)
 - Focus on the last 30-60 days unless the topic is evergreen
 - Prioritise named operators, named companies, hard numbers
+
+**Web-fallback mode (no API keys — e.g. Cowork):**
+The engine could NOT reach Reddit/X/LinkedIn, so YOU must recover that coverage
+with your own WebSearch tool. Run these searches explicitly and fold the results
+into the research before Step 5:
+- **LinkedIn (highest priority for B2B):** search `"<topic>" site:linkedin.com/posts`
+  and `"<topic>" site:linkedin.com/pulse`. Capture the author, the substantive
+  take, and the URL. (No engagement metrics — public/indexed content only.)
+- **Reddit:** search `"<topic>" site:reddit.com` — prefer `/r/…/comments/…` threads.
+- **X:** search `"<topic>" site:x.com` (or the topic + "twitter"/"X" takes).
+- **Web at large:** blog posts, articles, reports, op-eds from the last 30-60 days.
+- Prioritise named operators, named companies, and hard numbers throughout.
+- In the final output's Sources section, flag that LinkedIn/Reddit/X coverage came
+  from web search (public content, no engagement signal), not the API lanes.
 
 ### Step 5: Multi-Lens Angle Generation (THE CRITICAL STEP)
 
@@ -382,7 +411,7 @@ Rebuttal: [Direct rebuttal with evidence]
 ## Edge Cases
 
 - **Very niche topic, thin research:** Note to the user and offer to broaden (*"TokenMaxing for companies"* vs *"TokenMaxing in marketing teams specifically"*).
-- **No API keys:** Engine falls back to WebSearch-only. Flag this — results will be less engagement-weighted.
+- **No API keys (incl. Cowork sandbox):** Engine runs WebSearch-only. Recover the missing sources with your own WebSearch per Step 4 web-fallback mode — LinkedIn (`site:linkedin.com/posts` + `/pulse`), Reddit (`site:reddit.com`), X (`site:x.com`). Flag in Sources that this coverage is public web content with no engagement signal.
 - **No audience context provided:** Proceed, but flag in the output header that the angle was generated against the topic alone. Expect more generic framing and note this in the summary.
 - **Topic too broad:** *"AI for marketing"* is too broad. Ask for a specific cut.
 - **All lenses produce weak angles:** The topic may be too consensus-baked. Offer to pair it with a sibling topic, or reframe via a specific source trigger (tweet/article) that gives a sharper entry point.
