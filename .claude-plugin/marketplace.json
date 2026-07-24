@@ -1,0 +1,18 @@
+{
+  "name": "singleangle-marketplace",
+  "owner": {
+    "name": "tijsousa",
+    "url": "https://github.com/searchbrat/singleangle"
+  },
+  "metadata": {
+    "description": "Local marketplace hosting the singleangle plugin (Reddit + X + LinkedIn + web research for single-angle posts).",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "singleangle",
+      "source": "./plugins/singleangle",
+      "description": "Research a topic across Reddit, X, LinkedIn and the web, then produce the ingredients for ONE deep post. Includes a LinkedIn source (public posts & articles)."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# singleangle has no third-party Python dependencies.
+#
+# The skill uses Python 3.8+ standard library only — urllib, json,
+# argparse, dataclasses, concurrent.futures, pathlib, etc.
+#
+# This file exists so users running `pip install -r requirements.txt`
+# out of habit get a friendly no-op instead of an error.

@@ -1,0 +1,12 @@
+{
+  "name": "singleangle",
+  "version": "1.1.0",
+  "description": "Research a topic across Reddit, X, LinkedIn and the web, then produce the ingredients for ONE deep post — a single sharp angle, hooks, pro/con arguments, stats, quotes, a story moment, and closing lines. Includes a LinkedIn source (public posts & articles).",
+  "author": {
+    "name": "searchbrat",
+    "url": "https://github.com/searchbrat/singleangle"
+  },
+  "homepage": "https://github.com/searchbrat/singleangle",
+  "license": "See bundled LICENSE",
+  "keywords": ["content", "research", "linkedin", "reddit", "x", "writing", "angle"]
+}
